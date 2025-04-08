@@ -1,26 +1,16 @@
 import { CommandInteraction, SlashCommandBuilder } from 'discord.js';
 import { Rcon } from 'rcon-client';
 import type { Command } from './index.js';
-import { hasModeratorRole } from '../util/permissions.js';
+import { hasAdminRole } from '../util/permissions.js';
 
 const RCON_HOST = process.env.RCON_HOST || '127.0.0.1';
 const RCON_PORT = Number(process.env.RCON_PORT) || 25575;
 const RCON_PASSWORD = process.env.RCON_PASSWORD || '';
 
-// List of allowed moderating commands
-const ALLOWED_COMMANDS = [
-	'kick',
-	'whitelist',
-	'gamemode',
-	'tp',
-	'time',
-	'weather'
-];
-
 export default {
 	data: new SlashCommandBuilder()
-		.setName('do')
-		.setDescription('Executes a command on the Minecraft server.')
+		.setName('sudo')
+		.setDescription('Executes a command on the Minecraft server as super user.')
 		.addStringOption((option) =>
 			option
 				.setName('command')
@@ -30,7 +20,7 @@ export default {
 		.toJSON(),
 
 	async execute(interaction: CommandInteraction): Promise<void> {
-		if (!hasModeratorRole(interaction)) {
+		if (!hasAdminRole(interaction)) {
 			await interaction.reply({
 				content: '❌ You do not have permission to use this command.',
 				ephemeral: true,
@@ -42,16 +32,6 @@ export default {
 		if (!command) {
 			await interaction.reply({
 				content: '❌ You must provide a command to run.',
-				ephemeral: true,
-			});
-			return;
-		}
-
-		// Check if the command is allowed
-		const commandBase = command.split(' ')[0].toLowerCase();
-		if (!ALLOWED_COMMANDS.includes(commandBase)) {
-			await interaction.reply({
-				content: `❌ Command "${commandBase}" is not allowed. Only specific commands are permitted. If you are able, use sudo instead.`,
 				ephemeral: true,
 			});
 			return;
