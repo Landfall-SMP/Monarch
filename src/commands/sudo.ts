@@ -7,6 +7,10 @@ const RCON_HOST = process.env.RCON_HOST || '127.0.0.1';
 const RCON_PORT = Number(process.env.RCON_PORT) || 25575;
 const RCON_PASSWORD = process.env.RCON_PASSWORD || '';
 
+function cleanResponse(response: string): string {
+	return response.replace(/§[0-9a-fk-or]/g, '');
+}
+
 export default {
 	data: new SlashCommandBuilder()
 		.setName('sudo')
@@ -48,10 +52,7 @@ export default {
 			const response = await rcon.send(command);
 			rcon.end();
 
-			// Strip § symbols from the response
-			const cleanResponse = response ? response.replace(/§[0-9a-fk-or]/g, '') : 'No output';
-
-			await interaction.editReply(`✅ Command executed: \`${command}\`\n📝 Server response: \`${cleanResponse}\``);
+			await interaction.editReply(`✅ Command executed: \`${command}\`\n📝 Server response: \`${cleanResponse(response || 'No output')}\``);
 		} catch (error) {
 			console.error('RCON Error:', error);
 			await interaction.editReply({

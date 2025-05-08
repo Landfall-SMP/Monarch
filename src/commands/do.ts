@@ -7,15 +7,27 @@ const RCON_HOST = process.env.RCON_HOST || '127.0.0.1';
 const RCON_PORT = Number(process.env.RCON_PORT) || 25575;
 const RCON_PASSWORD = process.env.RCON_PASSWORD || '';
 
-// List of allowed moderating commands
 const ALLOWED_COMMANDS = [
-	'kick',
-	'whitelist',
-	'gamemode',
 	'tp',
-	'time',
-	'weather'
+	'kick',
+	'nickban',
+	'weather',
+	'gamemode',
+	'effect',
+	'clear',
+	'list',
+	'randomname',
+	'give'
 ];
+
+function cleanResponse(response: string): string {
+	return response.replace(/§[0-9a-fk-or]/g, '');
+}
+
+function isCommandAllowed(command: string): boolean {
+	const baseCommand = command.split(' ')[0].toLowerCase();
+	return ALLOWED_COMMANDS.includes(baseCommand);
+}
 
 export default {
 	data: new SlashCommandBuilder()
@@ -32,7 +44,7 @@ export default {
 	async execute(interaction: CommandInteraction): Promise<void> {
 		if (!hasModeratorRole(interaction)) {
 			await interaction.reply({
-				content: '❌ You do not have permission to use this command.',
+				content: '❌ You do not have permission to use this command. If you need to use a command at a higher level, please ask an administrator to do it for you or use the sudo command.',
 				ephemeral: true,
 			});
 			return;
@@ -47,11 +59,9 @@ export default {
 			return;
 		}
 
-		// Check if the command is allowed
-		const commandBase = command.split(' ')[0].toLowerCase();
-		if (!ALLOWED_COMMANDS.includes(commandBase)) {
+		if (!isCommandAllowed(command)) {
 			await interaction.reply({
-				content: `❌ Command "${commandBase}" is not allowed. Only specific commands are permitted. If you are able, use sudo instead.`,
+				content: '❌ This command is not allowed. Allowed commands are: ' + ALLOWED_COMMANDS.join(', '),
 				ephemeral: true,
 			});
 			return;
@@ -68,10 +78,7 @@ export default {
 			const response = await rcon.send(command);
 			rcon.end();
 
-			// Strip § symbols from the response
-			const cleanResponse = response ? response.replace(/§[0-9a-fk-or]/g, '') : 'No output';
-
-			await interaction.editReply(`✅ Command executed: \`${command}\`\n📝 Server response: \`${cleanResponse}\``);
+			await interaction.editReply(`✅ Command executed: \`${command}\`\n📝 Server response: \`${cleanResponse(response || 'No output')}\``);
 		} catch (error) {
 			console.error('RCON Error:', error);
 			await interaction.editReply({
