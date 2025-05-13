@@ -23,7 +23,7 @@ export default {
 		await interaction.reply('🔄 Restarting the Minecraft server...');
 
         // execute
-		exec('systemctl restart mcserver', (error, _, stderr) => {
+		exec('sudo systemctl restart mcserver', (error, _, stderr) => {
 			if (error) {
 				console.error(`Error: ${error.message}`);
 				interaction.editReply({
