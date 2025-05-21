@@ -15,17 +15,41 @@ const guidesInfo = {
 		url: 'https://www.landfall.world/guides/running-an-mtr/'
 	},
 	nations: { 
-		name: 'Establishing Nations', 
-		url: 'https://www.landfall.world/procedures/establishing-nations/'
+		name: 'Creating a Group', 
+		url: 'https://www.landfall.world/procedures/groups/creating-a-group/'
 	},
 	characters: { 
 		name: 'Character Guidelines', 
-		url: 'https://www.landfall.world/procedures/character-guidelines/'
+		url: 'https://www.landfall.world/procedures/characters/character-guidelines/'
 	},
 	rulesofwar: { 
 		name: 'Rules of War', 
-		url: 'https://www.landfall.world/procedures/rules-of-war/'
-	}
+		url: 'https://www.landfall.world/procedures/war-and-conflict/rules-of-war/'
+	},
+	metagaming: { 
+		name: 'Metagaming', 
+		url: 'https://www.landfall.world/procedures/misc-roleplay/metagaming/'
+	},
+	powergaming: { 
+		name: 'Powergaming', 
+		url: 'https://www.landfall.world/procedures/misc-roleplay/powergaming/'
+	},
+	frontline: { 
+		name: 'Frontline Mechanic', 
+		url: 'https://www.landfall.world/procedures/war-and-conflict/frontline-mechanic/'
+	},
+	sabotage: { 
+		name: 'Sabotage Mechanic', 
+		url: 'https://www.landfall.world/procedures/war-and-conflict/sabotage-mechanic/'
+	},
+	assassination: { 
+		name: 'Asssassination Rules', 
+		url: 'https://www.landfall.world/procedures/war-and-conflict/assassination-rules/'
+	},
+	imprisonment: { 
+		name: 'Imprisonment Rules', 
+		url: 'https://www.landfall.world/procedures/war-and-conflict/imprisonment-rules/'
+	},
 } as const;
 
 export default {
