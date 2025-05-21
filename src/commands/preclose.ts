@@ -1,6 +1,6 @@
 import { CommandInteraction, SlashCommandBuilder, TextChannel } from 'discord.js';
 import type { Command } from './index.js';
-import { hasModeratorRole } from '../util/permissions.js';
+import { hasModeratorRole, hasAdminRole } from '../util/permissions.js';
 
 export default {
   data: new SlashCommandBuilder()
@@ -9,7 +9,7 @@ export default {
     .toJSON(),
 
   async execute(interaction: CommandInteraction): Promise<void> {
-    if (!hasModeratorRole(interaction)) {
+    if (!hasModeratorRole(interaction) && !hasAdminRole(interaction)) {
       await interaction.reply({
         content: '❌ You do not have permission to use this command.',
         ephemeral: true,
