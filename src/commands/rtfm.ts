@@ -1,4 +1,4 @@
-import { CommandInteraction, SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
+import { CommandInteraction, SlashCommandBuilder, EmbedBuilder } from 'discord.js';
 import type { Command } from './index.js';
 
 export default {
